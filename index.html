@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+	<title>SKWWW</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"></meta>
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+	<link rel="stylesheet" type="text/css" href="css/main.css" />
+	<link rel="stylesheet" type="text/css" href="http://fonts.googleapis.com/css?family=Jockey+One" />
+	<script type="text/javascript" src="js/jquery.js"></script>
+	<script type="text/javascript" src="js/underscore.js"></script>
+	<script type="text/javascript" src="js/backbone.js"></script>
+	<!-- ---- TEMPLATE AREA ---- -->
+	<script type="text/template" id="navigationView-template">
+		<div id="navigationView">
+			<nav class="nav">
+				<div class="nav-inner">
+					<ul>
+						<li class="navToBlog">BLOG</li>
+						<li class="navToGallery">GALLERY</li>
+					</ul>
+				</div>
+			</nav>
+		</div>
+	</script>
+	<script type="text/template" id="blogView-template">
+		<div id="blogView">
+			<div style="display: none; text-align: center;"><IMG src="http://stephen-wagner.com/host/images/td_cover_web.jpg" ALT="image"/></div>
+			<div class="background">
+				<div class="centerbar"><!--<h1 style="margin: 0px">blog</h1>--><br />
+					<div class="blogentry">
+						<p class="timestamp">June 3, 2013</p><br />
+						<p class="blogtext">It&#39;s been a while! I&#39;ve begun the process of updating this site again, so stay tuned for updates and a working gallery.</p><br />
+						<p class="blogtext">Over on the <a href='http://www.impactgames.com/blog/'>ImpactGames blog</a> we&#39;ve got a slideshare up about Play the Election, which was one of the more interesting things I worked on last year. Check it out!<p>
+					</div>
+					<div class="blogentry">
+						<p class="timestamp">July 11, 2011</p><br />
+						<p class="blogtext">Some doodles.</p>
+						<img class="blogimage" src="images/content/a2012/ds_maiden_in_black.png" data-id="1" />
+						<img class="blogimage" src="images/content/a2012/karkats_001.png" />
+						<img class="blogimage" src="images/content/a2012/tim_bday_steve_01.jpg" data-id="0" />
+					</div>
+					<div class="blogentry">
+						<p class="timestamp">November 16, 2011</p><br />
+						<p class="blogtext">I finished this piece for EXU a while ago, but never updated this blog about it.</p>
+						<img class="blogimage" src="images/content/AAFinal_Persp_01.png"/>
+						<img class="blogimage" src="images/content/AAFinal_Persp_02.png"/>
+						<img class="blogimage" src="images/content/AAArmTexture_v01.png"/>
+						<img class="blogimage" src="images/content/AAPivotTexture_v01.png"/>
+					</div>
+					<div class="blogentry"><!--<img class="blogportrait" src="images/blog/sprite_portrait.gif" />-->
+						<p class="timestamp">March 27, 2011</p><br />
+						<p class="blogtext">WIP game asset for <a href="http://www.unrealsp.org/forums/viewtopic.php?f=4&t=1651">&quot;EXU&quot;</a></p>
+						<img class="blogimage" src="images/content/AAArmTexture_wip_01.jpg"/>
+						<img class="blogimage" src="images/content/AAArmTexture_wip_02.jpg"/>
+					</div>
+					<div class="blogentry">
+						<!--<img class="blogportrait" src="images/blog/sprite_portrait.gif" />-->
+						<p class="timestamp">March 27, 2011</p><br />
+						<p class="blogtext">Welcome to my web zone.</p>
+						<br />
+						<br />
+					</div>
+				</div>
+			</div>
+		</div>
+	</script>
+	<script type="text/template" id="galleryView-template">
+		<div id="galleryView">
+			<div class="centerbar">
+				<header></header>
+				<% var projectCount = projects.length %>
+				<% for (project in projects) { %>
+					<h4 class="project-heading"><%= projects[project].title %></h4>
+					<hr />
+					<% var imageCount = projects[project].images.length; %>
+					<div id="project-<%= projects[project].abbrev %>" class="project-item <%= ((imageCount > 6) && (projectCount != 1))?'minimized':'' %>" data-project-id="<%= projects[project].id %>">
+						<div class="inner">
+							<div class="description-area float-left">
+							<p class="project-description"><%= projects[project].description %></p>
+							<br />
+							<p class="project-tags">Tags: <%= projects[project].type %></p>
+							</div>
+							<div class="project-image-preview-area">
+								<% var images = projects[project].images.models; %>
+								<% for (image in images) { %>
+									<div class="project-image-preview">
+										<div class="gallery-thumbnail"><img src="<%= images[image].get('thumbnail') %>" data-index="<%= image %>" /></div>
+									
+										<div class="project-image-preview-title">
+											<%= images[image].get("title") %>
+										</div>
+									</div>
+								<% } %>
+								<div class="clearfix">&nbsp;</div>
+							</div>
+							<div class="project-image-focus-area hidden">
+								<div>
+									<span class="focus-prev"><img src="images/arrow_left.png" /></span>
+									<img class="focus-image" src="" />
+									<span class="focus-next"><img src="images/arrow_right.png" /></span>
+								</div>
+								<div class="project-image-focus-title"></div>
+								<div class="project-image-focus-description"></div>
+								<div class="close">[ CLOSE ]</div>
+							</div>
+							<div class="show-more">[ MORE ]</div>
+							<div class="clearfix">&nbsp;</div>
+						</div>
+					</div>
+				<% } %>
+				
+			</div>
+		</div>
+	</script>
+	<!-- ---- END TEMPLATE AREA ---- -->
+	<script type="text/javascript" src="js/system.js"></script>
+	<script type="text/javascript" src="js/data.js"></script>
+</head>
+<body>
+	<div class="header">
+		<img src="images/header.png" alt="stephen-wagner.com" onclick="system.navigateBlog()"></img>
+	</div>
+	<div id="navWrapper">
+	</div>
+	<div id="viewWrapper">
+		<div style="text-align: center;">(This page uses the Backbone.js framework. Please enable javascript for the best viewing experience.)</div>
+	</div>
+	<div id="featureimagecontainer">
+		<div>
+			<div class="imagearea">
+				<div class="imageframe frame-1">
+					<div class="frame-2">
+						<div class="frame-3">
+							<div class="frame-2">
+								<div class="frame-1">
+									<div class="frame-matte">
+										<img id="featureimage" src="" />
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="imagedescriptionarea">
+				<div>
+					<h3 class="imagetitle">Here is an image title</h3>
+					<p class="imagedescription">This is the image description. I made this image description to test the image description feature. I hope you enjoy it.</p>
+				</div>
+			</div>
+			<div class="clearfix">&nbsp;</div>
+		</div>
+	</div>
+	<!--<div class="footer"><p id="footer"><span class="contact">Stephen Wagner</span> - 2013 - Powered by <a href="http://stephen-wagner.com/host/images/td_cover_web.jpg">DogBlogg</a></p></div>-->
+	<div class="footer"><p id="footer"><span class="contact">Stephen Wagner</span> - 2013</p></div>
+</body>
+</html>
